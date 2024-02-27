@@ -1,6 +1,6 @@
 ﻿namespace DrumWebshop.Models
 {
-    public class Hihat
+    public class Cymbal
     {
         public string Name { get; set; }
         public int Price { get; set; }

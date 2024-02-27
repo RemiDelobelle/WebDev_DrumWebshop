@@ -1,0 +1,32 @@
+﻿@model List<DrumWebshop.Models.Cymbal>
+
+@{
+    ViewData["Title"] = "Crashes";
+}
+
+<div class="container">
+    <h2>Our Crash Offer</h2>
+    <div class="row">
+        @foreach (var crash in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@crash.Image" class="card-img-top" alt="Snare Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@crash.Name</h4>
+                        <h5 class="card-text">€@crash.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Size: @crash.Size"</li>
+                            <li class="list-group-item">@crash.Material</li>
+                            <li class="list-group-item">@crash.Finish finish</li>
+                            <li class="list-group-item">Sound: @crash.Sound</li>
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
