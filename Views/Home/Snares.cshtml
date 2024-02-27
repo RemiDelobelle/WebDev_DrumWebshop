@@ -1,0 +1,73 @@
+﻿@model List<DrumWebshop.Models.Snare>
+
+@{
+    ViewData["Title"] = "Snares";
+}
+
+<div class="container">
+    <h2>Our Snare Offer</h2>
+    <div class="row">
+        @foreach (var snare in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@snare.Image" class="card-img-top" alt="Snare Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@snare.Name</h4>
+                        <h5 class="card-text">€@snare.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Size: @snare.Diameter" x @snare.Depth"</li>
+                            <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
+                            <li class="list-group-item">@snare.LugCount lugs</li>
+                            <li class="list-group-item">@snare.Finish finish</li>
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+@* @model List<DrumWebshop.Models.Snare>
+
+@{
+    ViewData["Title"] = "Snares";
+}
+
+<div class="container">
+    <h2>Ons Snare Aanbod</h2>
+    <div class="row">
+        @foreach (var snare in Model)
+        {
+            <div class="col-md-12 mb-3">
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="@snare.Image" class="card-img" alt="Snare Image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@snare.Name</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Size: @snare.Diameter" x @snare.Depth"</li>
+                                    <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
+                                    <li class="list-group-item">@snare.LugCount lugs</li>
+                                    <li class="list-group-item">@snare.Finish finish</li>
+                                </ul>
+                                <a href="#" class="btn btn-primary">Add</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+ *@

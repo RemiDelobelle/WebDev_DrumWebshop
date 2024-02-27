@@ -1,0 +1,32 @@
+﻿@model List<DrumWebshop.Models.Hihat>
+
+@{
+    ViewData["Title"] = "Hihats";
+}
+
+<div class="container">
+    <h2>Our Hihat Offer</h2>
+    <div class="row">
+        @foreach (var hihat in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@hihat.Image" class="card-img-top" alt="Snare Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@hihat.Name</h4>
+                        <h5 class="card-text">€@hihat.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Size: @hihat.Size"</li>
+                            <li class="list-group-item">@hihat.Material</li>
+                            <li class="list-group-item">@hihat.Finish finish</li>
+                            <li class="list-group-item">Sound: @hihat.Sound</li>
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
