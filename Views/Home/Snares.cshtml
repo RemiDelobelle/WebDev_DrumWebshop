@@ -17,9 +17,17 @@
                         <h5 class="card-text">€@snare.Price</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Size: @snare.Diameter" x @snare.Depth"</li>
-                            <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
                             <li class="list-group-item">@snare.LugCount lugs</li>
-                            <li class="list-group-item">@snare.Finish finish</li>
+                            @if (snare.PlyCount != 0)
+                            {
+                                <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
+                            } else {
+                                <li class="list-group-item">@snare.Material shell</li>
+                            }
+                            @if (!string.IsNullOrEmpty(snare.Finish))
+                            {
+                                <li class="list-group-item">@snare.Finish finish</li>
+                            }
                         </ul>
                         <div class="d-flex justify-content-end">
                             <a href="#" class="btn btn-primary">Add</a>
@@ -30,6 +38,10 @@
         }
     </div>
 </div>
+
+
+
+
 
 
 
