@@ -1,0 +1,32 @@
+﻿@model List<DrumWebshop.Models.Cymbal>
+
+@{
+    ViewData["Title"] = "Rides";
+}
+
+<div class="container">
+    <h2>Our Ride Offer</h2>
+    <div class="row">
+        @foreach (var ride in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@ride.Image" class="card-img-top" alt="Snare Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@ride.Name</h4>
+                        <h5 class="card-text">€@ride.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Size: @ride.Size"</li>
+                            <li class="list-group-item">@ride.Material</li>
+                            <li class="list-group-item">@ride.Finish finish</li>
+                            <li class="list-group-item">Sound: @ride.Sound</li>
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

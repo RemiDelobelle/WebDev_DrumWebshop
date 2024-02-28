@@ -1,0 +1,36 @@
+﻿@model List<DrumWebshop.Models.Shell>
+
+@{
+    ViewData["Title"] = "Shells";
+}
+
+<div class="container">
+    <h2>Our Hihat Offer</h2>
+    <div class="row">
+        @foreach (var shell in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@shell.Image" class="card-img-top" alt="Snare Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@shell.Name</h4>
+                        <h5 class="card-text">€@shell.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">@shell.Pieces pieces"</li>
+                            @if (shell.PlyCount != 0)
+                            {
+                                <li class="list-group-item">@shell.PlyCount-ply @shell.Material shell</li>
+                            } else {
+                                <li class="list-group-item">@shell.Material shell</li>
+                            }
+                            <li class="list-group-item">Colour: @shell.Colour</li>
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@model List<DrumWebshop.Models.Hardware>
+
+@{
+    ViewData["Title"] = "Hardware Offer";
+}
+
+<div class="container">
+    <h2>Our Hardware Offer</h2>
+    <div class="row">
+        @foreach (var hardware in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="@hardware.Image" class="card-img-top" alt="Hardware Image">
+                    <div class="card-body">
+                        <h4 class="card-title">@hardware.Name</h4>
+                        <h5 class="card-text">€@hardware.Price</h5>
+                        <ul class="list-group list-group-flush">
+                            @foreach (var component in hardware.Comprises)
+                            {
+                                <li class="list-group-item">@component</li>
+                            }
+                        </ul>
+                        <div class="d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

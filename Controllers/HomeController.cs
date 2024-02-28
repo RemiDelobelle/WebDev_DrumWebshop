@@ -1,6 +1,7 @@
 ﻿using DrumWebshop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DrumWebshop.Controllers
 {
@@ -57,6 +58,22 @@ namespace DrumWebshop.Controllers
             return View(snares);
         }
 
+        public IActionResult Shells()
+        {
+            var shells = new List<Shell>
+            {
+                new Shell { Name="DW PDP Concept Classic", Price=1069, Pieces=3, PlyCount=7, Material="Maple", Colour="Natural with walnut hoops", Image=Url.Content("~/Images/Shells/DW_PDP_Concept.jpg") },
+                new Shell { Name="Pearl Crystal Beat Rock", Price=1625, Pieces=4, PlyCount=0, Material="Acrylic", Colour="Transparant", Image=Url.Content("~/Images/Shells/Pearl_Clear.jpg") },
+                new Shell { Name="Gretsch Renown Studio", Price=1899, Pieces=4, PlyCount=7, Material="Maple", Colour="Vintage Pearl", Image=Url.Content("~/Images/Shells/Gretsch_Renown.jpg") },
+                new Shell { Name="Tama Starclassic", Price=2090, Pieces=4, PlyCount=5, Material="Birch", Colour="Satin Sapphire Fade", Image=Url.Content("~/Images/Shells/Tama_Starcl.jpg") },
+                new Shell { Name="Mapex Saturn Evo", Price=2899, Pieces=5, PlyCount=8, Material="Walnut", Colour="Brunswick Green", Image=Url.Content("~/Images/Shells/Mapex_SaturnEvo.jpg") },
+                new Shell { Name="Ludwig Classic", Price=4399, Pieces=4, PlyCount=7, Material="Maple", Colour="Vintage Black Oyster", Image=Url.Content("~/Images/Shells/Ludwig_Classic.jpg") },
+                new Shell { Name="DW Satin Oil", Price=8899, Pieces=6, PlyCount=8, Material="Maple", Colour="Satin Regal Blue", Image=Url.Content("~/Images/Shells/DW_Satin.jpg") },
+            };
+
+            return View(shells);
+        }
+
         public IActionResult Hihats()
         {
             var hihats = new List<Cymbal>
@@ -88,6 +105,38 @@ namespace DrumWebshop.Controllers
             };
 
             return View(crashes);
+        }
+
+        public IActionResult Rides()
+        {
+            var rides = new List<Cymbal>
+            {
+                new Cymbal { Name="Zildjian K-Custom", Price=498, Size=20, Material="Cast Bronze", Finish="Regular", Sound="Dry, warm undertones with trashy dynamic", Image=Url.Content("~/Images/Rides/Zildjian_K.jpg") },
+                new Cymbal { Name="Paiste 101", Price=89, Size=20, Material="Brass", Finish="Polished", Sound="Soft, balanced", Image=Url.Content("~/Images/Rides/Paiste_101.jpg") },
+                new Cymbal { Name="Sabian HHX Fierce", Price=549, Size=21, Material="Bronze", Finish="Raw", Sound="Rough, dark tone", Image=Url.Content("~/Images/Rides/Sabian_HHX.jpg") },
+                new Cymbal { Name="Zultan Raw Jazz", Price=238, Size=22, Material="B20 Bronze", Finish="Non-lathed", Sound="Dark, warm, full", Image=Url.Content("~/Images/Rides/Zultan_RawJazz.jpg") },
+                new Cymbal { Name="Paiste \"The Powerslave\"", Price=609, Size=22, Material="B20 Bronze", Finish="Brilliant", Sound="Dark, full, controlled, glassy, deep harmonic wash", Image=Url.Content("~/Images/Rides/Paiste_Reflector.jpg") },
+                new Cymbal { Name="Istanbul Mehmet Bl Bell", Price=415, Size=23, Material="B20 Bronze", Finish="Traditional", Sound="Resonant, rich", Image=Url.Content("~/Images/Rides/Istanbul_Mehmet.jpg") },
+                new Cymbal { Name="Meinl Byzance Apple", Price=579, Size=24, Material="Cast Bronze", Finish="Traditional", Sound="Earthy with relatively short sustain", Image=Url.Content("~/Images/Rides/Meinl_Byzance.jpg") },
+                new Cymbal { Name="Zultan Caz", Price=277, Size=24, Material="B20 Bronze", Finish="Polished", Sound="Full, shimmering harmonic overtones", Image=Url.Content("~/Images/Rides/Zultan_Caz.jpg") },
+            };
+
+            return View(rides);
+        }
+
+        public IActionResult Hardware()
+        {
+            var hardware = new List<Hardware>
+            {
+                new Hardware { Name="DW PDP 700", Price=285, Comprises=new string[] { "2x PDCB710 boom cymbal stand", "1x PDHH713 hi-hat stand", "1x PDSS710 snare stand", "1x PDSP710 single drum pedal" }, Image=Url.Content("~/Images/Hardware/DW_PDP_700.jpg") },
+                new Hardware { Name="Mapex HP6005", Price=389, Comprises=new string[] { "2x B600 Cymbal boom stands", "1x H600 Hi-Hat stand", "1x S600 Snare stand", "1x P600 Bass Drum Pedal" }, Image=Url.Content("~/Images/Hardware/Mapex_HP6005.jpg") },
+                new Hardware { Name="Sonor HS LT 2000S", Price=469, Comprises=new string[] { "1x HH LT 2000 Hi-hat stands", "1x SS LT 2000 Snare drum stand", "2x MBS LT V2 Mini boom stand", "1x SP 2000 Single bass drum pedal" }, Image=Url.Content("~/Images/Hardware/Sonor_2000S.jpg") },
+                new Hardware { Name="Yamaha HW880", Price=698, Comprises=new string[] { "1x HS850 hi-hat stand", "1x SS850 snare stand", "1x FP9500C single pedal", "2x CS865 cymbal boom stand without counterweight" }, Image=Url.Content("~/Images/Hardware/Yamaha_HW880.jpg") },
+                new Hardware { Name="Tama HG5WN", Price=795, Comprises=new string[] { "1x HP900PN Iron Cobra power glide single pedal", "1x HS800W Roadpro snare stand", "2x HC83BW Roadpro cymbal boom stand", "1x HH905D Iron Cobra hi-hat stand" }, Image=Url.Content("~/Images/Hardware/Tama_HG5WN.jpg") },
+                new Hardware { Name="Pearl HWP-2010", Price=1111, Comprises=new string[] { "2x B-1030 Cymbal boom stands", "1x H-1050 Hi-Hat machine", "1x S-1030 Snare stand", "1x P-2ß5ßC Single bass drum pedal" }, Image=Url.Content("~/Images/Hardware/Pearl_HWP2010.jpg") }
+            };
+
+            return View(hardware);
         }
 
         public IActionResult Privacy()
