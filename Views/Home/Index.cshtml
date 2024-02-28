@@ -2,14 +2,83 @@
     ViewData["Title"] = "Home";
 }
 
+@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .btn-img {
+        width: 150px; /* Adjust as needed */
+        height: auto; /* Maintain aspect ratio */
+        margin-right: 10px; /* Optional: Add some space between images */
+    }
+</style>
+
+@* <div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Our Drum Webshop!</h1>
+        <p class="lead">Find the perfect drum snare for your needs.</p>
+        <hr class="my-4">
+        <p>Explore our collection of high-quality snare drums from top brands.</p>
+        <div class="mt-3">
+            <a href="/Home/Snares"><img src="~/Images/Snares/DW_PDP_Walnut.jpg" alt="View Snares" class="btn-img"></a>
+            <a href="/Home/Shells"><img src="~/Images/Shells/DW_Satin.jpg" alt="Shells" class="btn-img"></a>
+            <a href="/Home/Hihats"><img src="~/Images/Hihats/Zildjian_A.jpg" alt="Hihats" class="btn-img"></a>
+            <a href="/Home/Crashes"><img src="~/Images/Crashes/Zildjian_K.jpg" alt="Crashes" class="btn-img"></a>
+            <a href="/Home/Rides"><img src="~/Images/Rides/Meinl_Byzance.jpg" alt="Rides" class="btn-img"></a>
+            <a href="/Home/Hardware"><img src="~/Images/Hardware/Pearl_HWP2010.jpg" alt="Hardware" class="btn-img"></a>
+        </div>
+    </div> *@
+
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Welcome to Our Drum Webshop!</h1>
         <p class="lead">Find the perfect drum snare for your needs.</p>
         <hr class="my-4">
         <p>Explore our collection of high-quality snare drums from top brands.</p>
-        <a class="btn btn-primary btn-lg" href="/Home/Snares" role="button">View Snares</a>
+        <div class="mt-3 row">
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Snares"><img src="~/Images/Snares/DW_PDP_Walnut.jpg" alt="Snares" class="btn-img"></a>
+                    <span>Snares</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Shells"><img src="~/Images/Shells/DW_Satin.jpg" alt="Shells" class="btn-img"></a>
+                    <span>Shells</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Hihats"><img src="~/Images/Hihats/Zildjian_A.jpg" alt="Hihats" class="btn-img"></a>
+                    <span>Hihats</span>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row">
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Crashes"><img src="~/Images/Crashes/Zildjian_K.jpg" alt="Crashes" class="btn-img"></a>
+                    <span>Crashes</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Rides"><img src="~/Images/Rides/Meinl_Byzance.jpg" alt="Rides" class="btn-img"></a>
+                    <span>Rides</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="image-with-text">
+                    <a href="/Home/Hardware"><img src="~/Images/Hardware/Pearl_HWP2010.jpg" alt="Hardware" class="btn-img"></a>
+                    <span>Hardware</span>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     @* <div class="row">
         <div class="col-md-6">
@@ -22,11 +91,13 @@
             <p>If you have any questions or inquiries, feel free to contact us. Our team is here to assist you.</p>
             <a class="btn btn-secondary" href="#" role="button">Contact Us</a>
         </div>
-    </div> *@
+    </div>
 
     <hr>
 
     <footer>
         <p>&copy; 2024 Drum Webshop</p>
     </footer>
+    *@
+
 </div>
