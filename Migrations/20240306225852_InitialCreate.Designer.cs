@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrumWebshop.Migrations
 {
     [DbContext(typeof(DrumContext))]
-    [Migration("20240306224440_InitialCreate")]
+    [Migration("20240306225852_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

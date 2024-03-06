@@ -32,24 +32,24 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
-// Add items to database
-using var scope = app.Services.CreateScope();
-var serviceProvider = scope.ServiceProvider;
-var context = serviceProvider.GetRequiredService<DrumContext>();
+//// Add items to database
+//using var scope = app.Services.CreateScope();
+//var serviceProvider = scope.ServiceProvider;
+//var context = serviceProvider.GetRequiredService<DrumContext>();
 
-List<Snare> snares = DbInitializer.InitializeSnares(context);
-List<Shell> shells = DbInitializer.InitializeShells(context);
-List<Cymbal> hihats = DbInitializer.InitializeHihats(context);
-List<Cymbal> crashes = DbInitializer.InitializeCrashes(context);
-List<Cymbal> rides = DbInitializer.InitializeRides(context);
-List<Hardware> hardware = DbInitializer.InitializeHardware(context);
-context.AddRange(snares);
-context.AddRange(shells);
-context.AddRange(hihats);
-context.AddRange(crashes);
-context.AddRange(rides);
-context.AddRange(hardware);
-context.SaveChanges();
+//List<Snare> snares = DbInitializer.InitializeSnares(context);
+//List<Shell> shells = DbInitializer.InitializeShells(context);
+//List<Cymbal> hihats = DbInitializer.InitializeHihats(context);
+//List<Cymbal> crashes = DbInitializer.InitializeCrashes(context);
+//List<Cymbal> rides = DbInitializer.InitializeRides(context);
+//List<Hardware> hardware = DbInitializer.InitializeHardware(context);
+//context.AddRange(snares);
+//context.AddRange(shells);
+//context.AddRange(hihats);
+//context.AddRange(crashes);
+//context.AddRange(rides);
+//context.AddRange(hardware);
+//context.SaveChanges();
 
 
 app.Run();
