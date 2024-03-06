@@ -11,14 +11,20 @@
         {
             <div class="col-md-4 col-sm-6 mb-3">
                 <div class="card">
-                    <img src="@hardware.Image" class="card-img-top" alt="Hardware Image">
+                    <img src="@Url.Content(hardware.Image)" class="card-img-top" alt="Hardware Image">
                     <div class="card-body">
                         <h4 class="card-title">@hardware.Name</h4>
                         <h5 class="card-text">€@hardware.Price</h5>
                         <ul class="list-group list-group-flush">
-                            @foreach (var component in hardware.Comprises)
+                            @foreach (var comp in hardware.HwComponents)
                             {
-                                <li class="list-group-item">@component</li>
+                                @if (comp.Count > 1)
+                                {
+                                    <li class="list-group-item">@(comp.Count)x @(comp.Name)s (@comp.ProductCode)</li>
+                                } 
+                                else {
+                                    <li class="list-group-item">@(comp.Count)x @(comp.Name) (@comp.ProductCode)</li>
+                                }
                             }
                         </ul>
                         <div class="d-flex justify-content-end">
