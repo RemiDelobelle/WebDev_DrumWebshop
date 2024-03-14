@@ -25,36 +25,41 @@ namespace DrumWebshop.Controllers
 
         public IActionResult Snares()
         {
-            var snaresList = _drumContext.Snares.ToList();
+            var snaresList = _drumContext.Products.OfType<Snare>().ToList();
             return View(snaresList);
         }
         public IActionResult Shells()
         {
-            var shellsList = _drumContext.Shells.ToList();
+            var shellsList = _drumContext.Products.OfType<Shell>().ToList();
             return View(shellsList);
         }
         public IActionResult Hihats()
         {
-            var hihatsList = _drumContext.Cymbals.Where(c => c.Type == CymbalType.Hihat).ToList();
+            var hihatsList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Hihat).ToList();
             return View(hihatsList);
         }
         public IActionResult Crashes()
         {
-            var crashesList = _drumContext.Cymbals.Where(c => c.Type == CymbalType.Crash).ToList();
+            var crashesList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Crash).ToList();
             return View(crashesList);
         }
         public IActionResult Rides()
         {
-            var ridesList = _drumContext.Cymbals.Where(c => c.Type == CymbalType.Ride).ToList();
+            var ridesList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Ride).ToList();
             return View(ridesList);
         }
         public IActionResult Hardware()
         {
-            var hardwareList = _drumContext.Hardware.ToList();
+            var hardwareList = _drumContext.Products.OfType<Hardware>().ToList();
             return View(hardwareList);
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult ShoppingCart()
         {
             return View();
         }

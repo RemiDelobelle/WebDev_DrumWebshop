@@ -9,6 +9,8 @@ namespace DrumWebshop.Data
         {
         }
 
+        public DbSet<Product> Products { get; set; }
+
         public DbSet<Snare> Snares { get; set; }
         public DbSet<Shell> Shells { get; set; }
         public DbSet<Cymbal> Cymbals { get; set; }

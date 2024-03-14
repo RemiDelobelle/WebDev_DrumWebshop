@@ -5,9 +5,9 @@ namespace DrumWebshop
 {
     public class DbInitializer
     {
-        public static List<Snare> InitializeSnares(DrumContext context)
+        public static List<Product> InitializeProducts(DrumContext drumContext)
         {
-            var snares = new List<Snare>
+            var products = new List<Product>()
             {
                 new Snare { Name="Pearl Export", Price=119, Diameter=14, Depth=5.5, PlyCount=6, Material="Popular/ Maghony", LugCount=8, Finish="Laminated", Image="~/Images/Snares/Pearl_Export.jpg" },
                 new Snare { Name = "DW PDP Walnut", Price=325, Diameter = 14, Depth = 6.5, PlyCount=20, Material = "Walnut", LugCount = 10, Finish="Natural", Image = "~/Images/Snares/DW_PDP_Walnut.jpg" },
@@ -21,15 +21,8 @@ namespace DrumWebshop
                 new Snare { Name = "Ludwig LB417 Bl Beauty", Price=1035, Diameter = 14, Depth = 6.5, PlyCount=0, Material = "Brass", LugCount = 10, Finish="", Image = "~/Images/Snares/Ludwig_LB417.jpg" },
                 new Snare { Name = "Pearl B1330 Piccolo", Price=371, Diameter = 13, Depth = 3, PlyCount=0, Material = "Brass", LugCount = 6, Finish="", Image = "~/Images/Snares/Pearl_B1330Piccolo.jpg" },
                 new Snare { Name = "Ludwig Carl Palmer", Price=444, Diameter = 14, Depth = 3.7, PlyCount=0, Material = "Brass", LugCount = 10, Finish="", Image = "~/Images/Snares/Ludwig_CarlPalmer.jpg" },
-                new Snare { Name = "Meinl Snare Timbale", Price=155, Diameter = 10, Depth = 3, PlyCount=0, Material = "Steel", LugCount = 6, Finish="", Image = "~/Images/Snares/Meinl_Timbale.jpg" }
-            };
-            return snares;
-        }
+                new Snare { Name = "Meinl Snare Timbale", Price=155, Diameter = 10, Depth = 3, PlyCount=0, Material = "Steel", LugCount = 6, Finish="", Image = "~/Images/Snares/Meinl_Timbale.jpg" },
 
-        public static List<Shell> InitializeShells(DrumContext context)
-        {
-            var shells = new List<Shell>
-            {
                 new Shell { Name="DW PDP Concept Classic", Price=1069, Pieces=3, PlyCount=7, Material="Maple", Colour="Natural with walnut hoops", Image="~/Images/Shells/DW_PDP_Concept.jpg" },
                 new Shell { Name="Pearl Crystal Beat Rock", Price=1625, Pieces=4, PlyCount=0, Material="Acrylic", Colour="Transparant", Image="~/Images/Shells/Pearl_Clear.jpg" },
                 new Shell { Name="Gretsch Renown Studio", Price=1899, Pieces=4, PlyCount=7, Material="Maple", Colour="Vintage Pearl", Image="~/Images/Shells/Gretsch_Renown.jpg" },
@@ -37,29 +30,15 @@ namespace DrumWebshop
                 new Shell { Name="Mapex Saturn Evo", Price=2899, Pieces=5, PlyCount=8, Material="Walnut", Colour="Brunswick Green", Image="~/Images/Shells/Mapex_SaturnEvo.jpg" },
                 new Shell { Name="Ludwig Classic", Price=4399, Pieces=4, PlyCount=7, Material="Maple", Colour="Vintage Black Oyster", Image="~/Images/Shells/Ludwig_Classic.jpg" },
                 new Shell { Name="DW Satin Oil", Price=8899, Pieces=6, PlyCount=8, Material="Maple", Colour="Satin Regal Blue", Image="~/Images/Shells/DW_Satin.jpg" },
-            };
-            return shells;
-        }
 
-        public static List<Cymbal> InitializeHihats(DrumContext context)
-        {
-            var hihats = new List<Cymbal>
-            {
                 new Cymbal { Name="Zildjian A-Series New Beat", Price=459, Size=14, Material="Copper/ Tin", Finish="Regular/ Traditional", Sound="Solid", Image="~/Images/Hihats/Zildjian_A.jpg", Type=CymbalType.Hihat },
                 new Cymbal { Name="Zultan Q", Size=14, Price=198, Material="B20 Bronze", Finish="High-gloss polished/ Untreated raw", Sound="Warm basic tone with assertive dynamic range", Image="~/Images/Hihats/Zultan_Q.jpg", Type=CymbalType.Hihat },
                 new Cymbal { Name="Paiste PSTX Swiss", Price=111, Size=10, Material="Bronze/ Brass", Finish="Slik matte", Sound="Dry assertive", Image="~/Images/Hihats/Paiste_PSTX.jpg", Type=CymbalType.Hihat },
                 new Cymbal { Name="Zultan Caz", Price=218, Size=15, Material="B20 Bronze", Finish="Polished", Sound="Deep voluminous clear with pleasant mixture of warmth and assertiveness", Image="~/Images/Hihats/Zultan_Caz.jpg", Type=CymbalType.Hihat },
                 new Cymbal { Name="Istanbul Agop Xist Dry Dark", Price=238, Size=13, Material="B20 Bronze", Finish="Raw", Sound="Short trashy", Image="~/Images/Hihats/Istanbul_Agop.jpg", Type=CymbalType.Hihat },
                 new Cymbal { Name="Paiste 2002 Classic", Price=435, Size=15, Material="CuSn8 alloy", Finish="Polished", Sound="Medium bright, full, brilliant", Image="~/Images/Hihats/Paiste_2002Classic.jpg", Type=CymbalType.Hihat },
-                new Cymbal { Name="Paiste PST3", Price=79, Size=14, Material="Brass", Finish="Natural", Sound="Medium bright, clear, full", Image="~/Images/Hihats/Paiste_PST3.jpg", Type=CymbalType.Hihat }
-            };
-            return hihats;
-        }
+                new Cymbal { Name="Paiste PST3", Price=79, Size=14, Material="Brass", Finish="Natural", Sound="Medium bright, clear, full", Image="~/Images/Hihats/Paiste_PST3.jpg", Type=CymbalType.Hihat },
 
-        public static List<Cymbal> InitializeCrashes(DrumContext context)
-        {
-            var crashes = new List<Cymbal>
-            {
                 new Cymbal { Name="Zildjian A-Custom", Price=299, Size=16, Material="Cast Bronze", Finish="Brilliant", Sound="Natural, bright", Image="~/Images/Crashes/Zildjian_A.jpg", Type=CymbalType.Crash },
                 new Cymbal { Name="Zultan Aja", Price=68, Size=16, Material="B20 Bronze", Finish="Polished", Sound="Loud, full-bodied", Image="~/Images/Crashes/Zultan_Aja.jpg", Type=CymbalType.Crash },
                 new Cymbal { Name="Istanbul Agop Xist ION", Price=178, Size=16, Material="Copper/ Tin", Finish="Brilliant", Sound="Trashy, short sustain", Image="~/Images/Crashes/Istanbul_Agop.jpg", Type=CymbalType.Crash },
@@ -67,15 +46,8 @@ namespace DrumWebshop
                 new Cymbal { Name="Paiste PST7", Price=119, Size=18, Material="CuSn8 Bronze", Finish="Polished", Sound="Traditional", Image="~/Images/Crashes/Paiste_PST7.jpg", Type=CymbalType.Crash },
                 new Cymbal { Name="Zultan Q", Price=118, Size=15, Material="B20 Bronze", Finish="High-gloss polished/ Untreated raw", Sound="Full", Image="~/Images/Crashes/Zultan_Q.jpg", Type=CymbalType.Crash },
                 new Cymbal { Name="Zildjian K-Custom", Price=398, Size=17, Material="Cast Bronze", Finish="Regular", Sound="Dry, trashy overtones", Image="~/Images/Crashes/Zildjian_K.jpg", Type=CymbalType.Crash },
-                new Cymbal { Name="Meinl Byzance", Price=489, Size=20, Material="B20 Bronze", Finish="Extra dry natular", Sound="Thin, fast-decaying with deep basic tone", Image="~/Images/Crashes/Meinl_Byzance.jpg", Type=CymbalType.Crash }
-            };
-            return crashes;
-        }
+                new Cymbal { Name="Meinl Byzance", Price=489, Size=20, Material="B20 Bronze", Finish="Extra dry natular", Sound="Thin, fast-decaying with deep basic tone", Image="~/Images/Crashes/Meinl_Byzance.jpg", Type=CymbalType.Crash },
 
-        public static List<Cymbal> InitializeRides(DrumContext context)
-        {
-            var rides = new List<Cymbal>
-            {
                 new Cymbal { Name="Zildjian K-Custom", Price=498, Size=20, Material="Cast Bronze", Finish="Regular", Sound="Dry, warm undertones with trashy dynamic", Image="~/Images/Rides/Zildjian_K.jpg", Type=CymbalType.Ride },
                 new Cymbal { Name="Paiste 101", Price=89, Size=20, Material="Brass", Finish="Polished", Sound="Soft, balanced", Image="~/Images/Rides/Paiste_101.jpg", Type=CymbalType.Ride },
                 new Cymbal { Name="Sabian HHX Fierce", Price=549, Size=21, Material="Bronze", Finish="Raw", Sound="Rough, dark tone", Image="~/Images/Rides/Sabian_HHX.jpg", Type=CymbalType.Ride },
@@ -84,14 +56,7 @@ namespace DrumWebshop
                 new Cymbal { Name="Istanbul Mehmet Bl Bell", Price=415, Size=23, Material="B20 Bronze", Finish="Traditional", Sound="Resonant, rich", Image="~/Images/Rides/Istanbul_Mehmet.jpg", Type=CymbalType.Ride },
                 new Cymbal { Name="Meinl Byzance Apple", Price=579, Size=24, Material="Cast Bronze", Finish="Traditional", Sound="Earthy with relatively short sustain", Image="~/Images/Rides/Meinl_Byzance.jpg", Type=CymbalType.Ride },
                 new Cymbal { Name="Zultan Caz", Price=277, Size=24, Material="B20 Bronze", Finish="Polished", Sound="Full, shimmering harmonic overtones", Image="~/Images/Rides/Zultan_Caz.jpg", Type=CymbalType.Ride },
-            };
-            return rides;
-        }
 
-        public static List<Hardware> InitializeHardware(DrumContext context)
-        {
-            var hardware = new List<Hardware>
-            {
                 new Hardware { Name="DW PDP 700", Price=285, Image="~/Images/Hardware/DW_PDP_700.jpg", HwComponents = new List<HwComponent>
                 {
                     new HwComponent { Count = 2, ProductCode = "PDCB710", Name = "Boom cymbal stand" },
@@ -135,7 +100,7 @@ namespace DrumWebshop
                     new HwComponent { Count = 1, ProductCode = "P-2ß5ßC", Name = "Single bass drum pedal" }
                 }}
             };
-            return hardware;
+            return products;
         }
     }
 }
