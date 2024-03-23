@@ -10,12 +10,13 @@ namespace DrumWebshop.Data
         }
 
         public DbSet<Product> Products { get; set; }
-
         public DbSet<Snare> Snares { get; set; }
         public DbSet<Shell> Shells { get; set; }
         public DbSet<Cymbal> Cymbals { get; set; }
         public DbSet<Hardware> Hardware { get; set; }
         public DbSet<HwComponent> HwComponents { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

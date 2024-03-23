@@ -53,16 +53,85 @@ namespace DrumWebshop.Controllers
             var hardwareList = _drumContext.Products.OfType<Hardware>().ToList();
             return View(hardwareList);
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
 
+        public IActionResult AddToCart(int productId, string returnUrl)
+        {
+            var productToAdd = _drumContext.Products.FirstOrDefault(p => p.Id == productId);
+
+            if (productToAdd != null)
+            {
+                var existingCartItem = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
+
+                if (existingCartItem != null)
+                {
+                    existingCartItem.Quantity++;
+                    _drumContext.Update(existingCartItem);
+                    _logger.LogInformation($"[INFO] {existingCartItem} already in cart: now {existingCartItem.Quantity}x");
+                }
+                else
+                {
+                    var cartItem = new CartItem
+                    {
+                        Product = productToAdd,
+                        Quantity = 1
+                    };
+                    _drumContext.CartItems.Add(cartItem);
+                    _logger.LogInformation($"[INFO] {cartItem} added to cart");
+                }
+
+                _drumContext.SaveChanges();
+            }
+
+            return Redirect(returnUrl);
+        }
+
         public IActionResult ShoppingCart()
         {
-            return View();
+            var cartItems = _drumContext.CartItems.Include(c => c.Product).ToList();
+            _logger.LogInformation($"[INFO] Retrieved items for shopping cart: {cartItems.Count} different items");
+
+            return View(cartItems);
         }
+
+        public IActionResult AddExtra(int productId)
+        {
+            var cartItemToAdd = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
+
+            if (cartItemToAdd != null)
+            {
+                cartItemToAdd.Quantity++;
+                _drumContext.SaveChanges();
+                _logger.LogInformation($"[INFO] {cartItemToAdd}: Quantity + 1");
+            }
+
+            return RedirectToAction("ShoppingCart");
+        }
+        public IActionResult RemoveFromCart(int productId)
+        {
+            var cartItemToRemove = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
+
+            if (cartItemToRemove != null)
+            {
+                if (cartItemToRemove.Quantity > 1)
+                {
+                    cartItemToRemove.Quantity--;
+                    _logger.LogInformation($"[INFO] {cartItemToRemove}: Quantity - 1");
+                }
+                else
+                {
+                    _drumContext.CartItems.Remove(cartItemToRemove);
+                    _logger.LogInformation($"[INFO] {cartItemToRemove} removed");
+                }
+                _drumContext.SaveChanges();
+            }
+
+            return RedirectToAction("ShoppingCart");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

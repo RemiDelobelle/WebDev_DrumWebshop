@@ -1,57 +1,106 @@
-﻿<!DOCTYPE html>
+﻿@model List<DrumWebshop.Models.CartItem>
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Shopping Cart</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        .product-image {
+            max-width: 50px;
+            max-height: 50px;
+        }
+
+        .product-name {
+            font-size: 18px;
+        }
+
+        .image-text-container {
+            display: flex;
+            align-items: center;
+        }
+
+            .image-text-container .product-name {
+                margin-left: 10px; /* Adjust the margin as needed */
+            }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1 class="mt-5">Shopping Cart</h1>
-
-        <div class="mt-3">
-            <table class="table">
-                <thead class="thead-dark">
+    <div class="container mt-5 mb-5">
+        <table class="table table-striped">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Action</th>
+                        <td class="align-middle text-center">
+                            <div class="image-text-container">
+                                <img src="@Url.Content(item.Product.Image)" alt="@item.Product.Name" class="img-thumbnail product-image" />
+                                <span class="product-name">@item.Product.Name</span>
+                            </div>
+                        </td>
+                        <td class="align-middle">€@item.Product.Price</td>
+                        <td class="align-middle">
+                            @if (item.Product is DrumWebshop.Models.Cymbal cymbal)
+                            {
+                                switch (cymbal.Type)
+                                {
+                                    case DrumWebshop.Models.CymbalType.Hihat:
+                                        <text>Hihat</text>
+                                        break;
+                                    case DrumWebshop.Models.CymbalType.Crash:
+                                        <text>Crash</text>
+                                        break;
+                                    case DrumWebshop.Models.CymbalType.Ride:
+                                        <text>Ride</text>
+                                        break;
+                                    default:
+                                        <text>Other</text>
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                @item.Product.GetType().Name;
+                            }
+                        </td>
+                        <td class="align-middle">@item.Quantity</td>
+                        <td class="align-middle">€@(item.Product.Price * item.Quantity)</td>
+                        <td class="align-middle">
+                            <form method="post" action="@Url.Action("AddExtra", "Home")" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <button type="submit" class="btn btn-success btn-md">+</button>
+                            </form>
+                            <form method="post" action="@Url.Action("RemoveFromCart", "Home")" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.Product.Id" />
+                                <button type="submit" class="btn btn-danger btn-md ml-1">-</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Snare Drum</td>
-                        <td>€150</td>
-                        <td>2</td>
-                        <td>€300</td>
-                        <td><a href="#" class="btn btn-danger">Remove</a></td>
-                    </tr>
-                    <tr>
-                        <td>Bass Drum</td>
-                        <td>€200</td>
-                        <td>1</td>
-                        <td>€200</td>
-                        <td><a href="#" class="btn btn-danger">Remove</a></td>
-                    </tr>
-                    <tr>
-                        <td>Hi-Hat Cymbals</td>
-                        <td>€100</td>
-                        <td>3</td>
-                        <td>€300</td>
-                        <td><a href="#" class="btn btn-danger">Remove</a></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">Total:</td>
-                        <td>€800</td>
-                        <td><a href="#" class="btn btn-primary">Checkout</a></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="align-middle"><strong>Total:</strong></td>
+                    <td class="align-middle"><strong>@Model.Sum(item => item.Quantity)</strong></td>
+                    <td class="align-middle"><strong>€@Model.Sum(item => item.Product.Price * item.Quantity)</strong></td>
+                    <td class="align-middle"><a href="@Url.Action("Checkout", "Home")" class="btn btn-primary">Checkout</a></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </body>
 </html>

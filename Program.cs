@@ -38,7 +38,7 @@ app.MapControllerRoute(
 //var context = serviceProvider.GetRequiredService<DrumContext>();
 
 //List<Product> products = DbInitializer.InitializeProducts(context);
-//context.AddRange(products);
+//context.Products.AddRange(products);
 //context.SaveChanges();
 
 

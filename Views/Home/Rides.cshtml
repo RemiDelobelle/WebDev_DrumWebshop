@@ -22,7 +22,10 @@
                             <li class="list-group-item">Sound: @ride.Sound</li>
                         </ul>
                         <div class="d-flex justify-content-end">
-                            <a href="#" class="btn btn-primary">Add</a>
+                            <form method="post" action="@Url.Action("AddToCart", "Home", new { returnUrl = Context.Request.Path })">
+                                <input type="hidden" name="productId" value="@ride.Id" />
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
                         </div>
                     </div>
                 </div>
