@@ -35,10 +35,10 @@ namespace DrumWebshop.Controllers
 
             var checkedOutItems = _context.CartItems
                 .Where(c => c.IsCheckedOut)
-                .GroupBy(c => c.Product.Id) // Group by ProductId
+                .GroupBy(c => c.Product.Id)
                 .Select(group => new CartItem
                 {
-                    Product = _context.Products.FirstOrDefault(p => p.Id == group.Key), // Retrieve product by Id
+                    Product = _context.Products.FirstOrDefault(p => p.Id == group.Key),
                     Quantity = group.Sum(c => c.Quantity)
                 })
                 .ToList();
@@ -88,7 +88,7 @@ namespace DrumWebshop.Controllers
             }
             else
             {
-                return 7; // Other product types
+                return 7;
             }
         }
     }

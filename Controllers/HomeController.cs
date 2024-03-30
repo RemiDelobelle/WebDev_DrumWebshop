@@ -154,28 +154,24 @@ namespace DrumWebshop.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                // If the user is not authenticated, return to the current page or any other desired action
                 return Redirect(returnUrl);
             }
 
             var productToAdd = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
-            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+            var user = await _userManager.GetUserAsync(User);
 
             if (productToAdd != null && user != null)
             {
-                // Check if the item already exists in the cart for the user
                 var existingCartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Product.Id == productId && c.UserId == user.Id && c.IsCheckedOut == false);
 
                 if (existingCartItem != null)
                 {
-                    // If the item is already in the cart, update the quantity
                     existingCartItem.Quantity++;
                     _context.Update(existingCartItem);
                 }
                 else
                 {
-                    // If the item is not in the cart, add a new cart item
-                    var cartItem = new CartItem(productToAdd, 1, user.Id); // Provide user id
+                    var cartItem = new CartItem(productToAdd, 1, user.Id);
                     _context.CartItems.Add(cartItem);
                 }
 
@@ -198,7 +194,7 @@ namespace DrumWebshop.Controllers
                 ViewData["Message"] = "You do not have the rights to visit this page.";
             }
 
-            ViewData["NotLoggedIn"] = notLoggedIn; // Pass the notLoggedIn parameter to the view
+            ViewData["NotLoggedIn"] = notLoggedIn;
 
             return View();
         }

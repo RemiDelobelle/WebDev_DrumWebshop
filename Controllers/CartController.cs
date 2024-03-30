@@ -64,14 +64,14 @@ namespace DrumWebshop.Controllers
                 return RedirectToAction("AccessDenied", "Home", new { notLoggedIn = false });
             }
 
-            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+            var user = await _userManager.GetUserAsync(User);
             var checkedOutItems = await _context.CartItems
                 .Include(c => c.Product)
                 .Where(c => c.UserId == user.Id && c.IsCheckedOut)
-                .GroupBy(c => c.Product.Id) // Group by ProductId
+                .GroupBy(c => c.Product.Id)
                 .Select(group => new CartItem
                 {
-                    Product = group.First().Product, // Use the first item's product
+                    Product = group.First().Product,
                     Quantity = group.Sum(c => c.Quantity)
                 })
                 .ToListAsync();
@@ -82,7 +82,7 @@ namespace DrumWebshop.Controllers
 
         public async Task<IActionResult> AddExtra(int productId)
         {
-            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+            var user = await _userManager.GetUserAsync(User);
             var cartItemToAdd = await _context.CartItems.FirstOrDefaultAsync(c => c.Product.Id == productId && c.UserId == user.Id && !c.IsCheckedOut);
 
             if (cartItemToAdd != null)
@@ -96,7 +96,7 @@ namespace DrumWebshop.Controllers
 
         public async Task<IActionResult> RemoveFromCart(int productId)
         {
-            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+            var user = await _userManager.GetUserAsync(User);
             var cartItemToRemove = await _context.CartItems.FirstOrDefaultAsync(c => c.Product.Id == productId && c.UserId == user.Id && !c.IsCheckedOut);
 
             if (cartItemToRemove != null)
@@ -117,7 +117,7 @@ namespace DrumWebshop.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+            var user = await _userManager.GetUserAsync(User);
             var cartItemsToCheckout = await _context.CartItems
                                            .Include(c => c.Product)
                                            .Where(c => c.UserId == user.Id && !c.IsCheckedOut)
@@ -130,14 +130,12 @@ namespace DrumWebshop.Controllers
 
                 if (existingCheckedOutItem != null && existingCheckedOutItem.UserId == user.Id)
                 {
-                    // Update the quantity of the existing checked-out item
                     existingCheckedOutItem.Quantity += cartItem.Quantity;
                     _context.Remove(cartItem);
                     _context.Update(existingCheckedOutItem);
                 }
                 else
                 {
-                    // No existing checked-out item found, mark the current cartItem as checked out
                     cartItem.IsCheckedOut = true;
                     _context.Update(cartItem);
                 }
@@ -145,7 +143,6 @@ namespace DrumWebshop.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Redirect to a confirmation page or any other desired action
             return RedirectToAction("Index", "Home");
         }
     }

@@ -172,7 +172,6 @@ namespace DrumWebshop.Controllers
                     return View();
                 }
 
-                // Create a new user
                 var newUser = new IdentityUser { UserName = email, Email = email };
                 var result = await _userManager.CreateAsync(newUser, password);
                 if (result.Succeeded)
@@ -291,7 +290,6 @@ namespace DrumWebshop.Controllers
         }
         private List<Product> ApplySortOrder(List<Product> products, string sortOrder)
         {
-            // Apply sort order
             return sortOrder switch
             {
                 "Type" => products.OrderBy(GetTypePriority).ToList(),
