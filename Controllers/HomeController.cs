@@ -53,7 +53,7 @@ namespace DrumWebshop.Controllers
             var hardwareList = _drumContext.Products.OfType<Hardware>().ToList();
             return View(hardwareList);
         }
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }

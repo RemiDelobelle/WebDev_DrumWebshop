@@ -1,0 +1,36 @@
+﻿@model DrumWebshop.ViewModel.RegisterVM
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header h4 font-weight-bold">Register</div>
+                <div class="card-body">
+                    <form asp-action="Register" method="post">
+                        <div class="mb-3">
+                            <label for="inputEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="inputEmail" name="Email" asp-for="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" name="Password" asp-for="Password">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="inputConfirmPassword" name="ConfirmPassword" asp-for="ConfirmPassword">
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <p class="text-muted small">Password must contain at least one lowercase letter, one uppercase letter, one digit, one special symbol, and must be at least 8 characters long.</p>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a href="/Account/Login" class="btn btn-danger ml-md-auto mt-3 mt-md-0">Return to Login</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
