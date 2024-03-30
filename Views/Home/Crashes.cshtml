@@ -1,4 +1,7 @@
 ﻿@model List<DrumWebshop.Models.Cymbal>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Crashes";
@@ -6,6 +9,24 @@
 
 <div class="container">
     <h2>Our Crash Offer</h2>
+    <form id="sortForm" asp-controller="Home" asp-action="Crashes" method="get" class="d-flex">
+        <label for="sortOrder" class="mr-2 mt-2" style="margin-right: 5px">Sort By:</label>
+        <select class="form-control form-control-sm mr-2" id="sortOrder" name="sortOrder" style="width: 250px; height: 40px; margin-right: 5px;">
+            <option value="-">-</option>
+            <option value="Size - High first">Size - High first</option>
+            <option value="Size - Low first">Size - Low first</option>
+            <option value="Material - Alphabetical">Material - Alphabetical</option>
+            <option value="Material - Reverse Alphabetical">Material - Reverse Alphabetical</option>
+            <option value="Price - High first">Price - High first</option>
+            <option value="Price - Low first">Price - Low first</option>
+            <option value="Name - Alphabetical">Name - Alphabetical</option>
+            <option value="Name - Reverse Alphabetical">Name - Reverse Alphabetical</option>
+        </select>
+        <button type="submit" class="btn btn-primary align-self-center" style="min-width: 80px; height: 40px;">Apply</button>
+    </form>
+
+    <div class="my-3"></div>
+
     <div class="row">
         @foreach (var crash in Model)
         {
@@ -22,10 +43,13 @@
                             <li class="list-group-item">Sound: @crash.Sound</li>
                         </ul>
                         <div class="d-flex justify-content-end">
-                            <form method="post" action="@Url.Action("AddToCart", "Home", new { returnUrl = Context.Request.Path })">
-                                <input type="hidden" name="productId" value="@crash.Id" />
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </form>
+                            @if (SignInManager.IsSignedIn(User) && !UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "PendingMember").Result)
+                            {
+                                <form method="post" action="@Url.Action("AddToCart", "Home", new { returnUrl = Context.Request.Path })">
+                                    <input type="hidden" name="productId" value="@crash.Id" />
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,7 @@
 ﻿@model List<DrumWebshop.Models.Snare>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Snares";
@@ -6,6 +9,26 @@
 
 <div class="container">
     <h2>Our Snare Offer</h2>
+    <form id="sortForm" asp-controller="Home" asp-action="Snares" method="get" class="d-flex">
+        <label for="sortOrder" class="mr-2 mt-2" style="margin-right: 5px">Sort By:</label>
+        <select class="form-control form-control-sm mr-2" id="sortOrder" name="sortOrder" style="width: 250px; height: 40px; margin-right: 5px;">
+            <option value="-">-</option>
+            <option value="Diameter - High first">Diameter - High first</option>
+            <option value="Diameter - Low first">Diameter - Low first</option>
+            <option value="Depth - High first">Depth - High first</option>
+            <option value="Depth - Low first">Depth - Low first</option>
+            <option value="Material - Alphabetical">Material - Alphabetical</option>
+            <option value="Material - Reverse Alphabetical">Material - Reverse Alphabetical</option>
+            <option value="Price - High first">Price - High first</option>
+            <option value="Price - Low first">Price - Low first</option>
+            <option value="Name - Alphabetical">Name - Alphabetical</option>
+            <option value="Name - Reverse Alphabetical">Name - Reverse Alphabetical</option>
+        </select>
+        <button type="submit" class="btn btn-primary align-self-center" style="min-width: 80px; height: 40px;">Apply</button>
+    </form>
+
+    <div class="my-3"></div>
+
     <div class="row">
         @foreach (var snare in Model)
         {
@@ -21,7 +44,9 @@
                             @if (snare.PlyCount != 0)
                             {
                                 <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
-                            } else {
+                            }
+                            else
+                            {
                                 <li class="list-group-item">@snare.Material shell</li>
                             }
                             @if (!string.IsNullOrEmpty(snare.Finish))
@@ -30,10 +55,13 @@
                             }
                         </ul>
                         <div class="d-flex justify-content-end">
-                            <form method="post" action="@Url.Action("AddToCart", "Home", new { returnUrl = Context.Request.Path })">
-                                <input type="hidden" name="productId" value="@snare.Id" />
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </form>
+                            @if (SignInManager.IsSignedIn(User) && !UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "PendingMember").Result)
+                            {
+                                <form method="post" action="@Url.Action("AddToCart", "Home", new { returnUrl = Context.Request.Path })">
+                                    <input type="hidden" name="productId" value="@snare.Id" />
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
@@ -41,48 +69,3 @@
         }
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-@* @model List<DrumWebshop.Models.Snare>
-
-@{
-    ViewData["Title"] = "Snares";
-}
-
-<div class="container">
-    <h2>Ons Snare Aanbod</h2>
-    <div class="row">
-        @foreach (var snare in Model)
-        {
-            <div class="col-md-12 mb-3">
-                <div class="card">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="@snare.Image" class="card-img" alt="Snare Image">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">@snare.Name</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Size: @snare.Diameter" x @snare.Depth"</li>
-                                    <li class="list-group-item">@snare.PlyCount-ply @snare.Material shell</li>
-                                    <li class="list-group-item">@snare.LugCount lugs</li>
-                                    <li class="list-group-item">@snare.Finish finish</li>
-                                </ul>
-                                <a href="#" class="btn btn-primary">Add</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
- *@
