@@ -1,136 +1,208 @@
-﻿using DrumWebshop.Data;
-using DrumWebshop.Models;
+﻿using DrumWebshop.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
+using DrumWebshop.Data;
+using DrumWebshop.Models;
 
 namespace DrumWebshop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly DrumContext _drumContext;
+        private readonly DrumContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, DrumContext drumContext)
+        public HomeController(ILogger<HomeController> logger, DrumContext context, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
-            _drumContext = drumContext;
+            _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            return View();            
+            return View();
         }
 
-        public IActionResult Snares()
+        public IActionResult Privacy()
         {
-            var snaresList = _drumContext.Products.OfType<Snare>().ToList();
+            return View();
+        }
+        public IActionResult Snares(string sortOrder = null)
+        {
+            var snaresList = _context.Products.OfType<Snare>().ToList();
+            snaresList = ApplySortOrder(snaresList, sortOrder);
+
             return View(snaresList);
         }
-        public IActionResult Shells()
+        private List<Snare> ApplySortOrder(List<Snare> snares, string sortOrder)
         {
-            var shellsList = _drumContext.Products.OfType<Shell>().ToList();
+            // Apply sort order
+            return sortOrder switch
+            {
+                "Diameter - High first" => snares.OrderByDescending(s => s.Diameter).ToList(),
+                "Diameter - Low first" => snares.OrderBy(s => s.Diameter).ToList(),
+                "Depth - High first" => snares.OrderByDescending(s => s.Depth).ToList(),
+                "Depth - Low first" => snares.OrderBy(s => s.Depth).ToList(),
+                "Material - Alphabetical" => snares.OrderBy(s => s.Material).ToList(),
+                "Material - Reverse Alphabetical" => snares.OrderByDescending(s => s.Material).ToList(),
+                "Price - High first" => snares.OrderByDescending(s => s.Price).ToList(),
+                "Price - Low first" => snares.OrderBy(s => s.Price).ToList(),
+                "Name - Alphabetical" => snares.OrderBy(s => s.Name).ToList(),
+                "Name - Reverse Alphabetical" => snares.OrderByDescending(s => s.Name).ToList(),
+                "-" => snares,
+                _ => snares,
+            };
+        }
+        public IActionResult Shells(string sortOrder = null)
+        {
+            var shellsList = _context.Products.OfType<Shell>().ToList();
+            shellsList = ApplySortOrder(shellsList, sortOrder);
+
             return View(shellsList);
         }
-        public IActionResult Hihats()
+        private List<Shell> ApplySortOrder(List<Shell> shells, string sortOrder)
         {
-            var hihatsList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Hihat).ToList();
+            // Apply sort order
+            return sortOrder switch
+            {
+                "Pieces count - High first" => shells.OrderByDescending(s => s.Pieces).ToList(),
+                "Pieces count - Low first" => shells.OrderBy(s => s.Pieces).ToList(),
+                "Material - Alphabetical" => shells.OrderBy(s => s.Material).ToList(),
+                "Material - Reverse Alphabetical" => shells.OrderByDescending(s => s.Material).ToList(),
+                "Price - High first" => shells.OrderByDescending(s => s.Price).ToList(),
+                "Price - Low first" => shells.OrderBy(s => s.Price).ToList(),
+                "Name - Alphabetical" => shells.OrderBy(s => s.Name).ToList(),
+                "Name - Reverse Alphabetical" => shells.OrderByDescending(s => s.Name).ToList(),
+                "-" => shells,
+                _ => shells,
+            };
+        }
+
+        public IActionResult Hihats(string sortOrder = null)
+        {
+            var hihatsList = _context.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Hihat).ToList();
+            hihatsList = ApplySortOrder(hihatsList, sortOrder);
+
             return View(hihatsList);
         }
-        public IActionResult Crashes()
+        public IActionResult Crashes(string sortOrder = null)
         {
-            var crashesList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Crash).ToList();
+            var crashesList = _context.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Crash).ToList();
+            crashesList = ApplySortOrder(crashesList, sortOrder);
+
             return View(crashesList);
         }
-        public IActionResult Rides()
+        public IActionResult Rides(string sortOrder = null)
         {
-            var ridesList = _drumContext.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Ride).ToList();
+            var ridesList = _context.Products.OfType<Cymbal>().Where(c => c.Type == CymbalType.Ride).ToList();
+            ridesList = ApplySortOrder(ridesList, sortOrder);
+
             return View(ridesList);
         }
-        public IActionResult Hardware()
+        private List<Cymbal> ApplySortOrder(List<Cymbal> cymbals, string sortOrder)
         {
-            var hardwareList = _drumContext.Products.OfType<Hardware>().ToList();
+            // Apply sort order
+            return sortOrder switch
+            {
+                "Size - High first" => cymbals.OrderByDescending(c => c.Size).ToList(),
+                "Size - Low first" => cymbals.OrderBy(c => c.Size).ToList(),
+                "Material - Alphabetical" => cymbals.OrderBy(c => c.Material).ToList(),
+                "Material - Reverse Alphabetical" => cymbals.OrderByDescending(c => c.Material).ToList(),
+                "Price - High first" => cymbals.OrderByDescending(c => c.Price).ToList(),
+                "Price - Low first" => cymbals.OrderBy(c => c.Price).ToList(),
+                "Name - Alphabetical" => cymbals.OrderBy(c => c.Name).ToList(),
+                "Name - Reverse Alphabetical" => cymbals.OrderByDescending(c => c.Name).ToList(),
+                "-" => cymbals,
+                _ => cymbals,
+            };
+        }
+        public IActionResult Hardware(string sortOrder = null)
+        {
+            var hardwareList = _context.Products.OfType<Hardware>().ToList();
+            hardwareList = ApplySortOrder(hardwareList, sortOrder);
+
             return View(hardwareList);
         }
+        private List<Hardware> ApplySortOrder(List<Hardware> hardware, string sortOrder)
+        {
+            // Apply sort order
+            return sortOrder switch
+            {
+                "Price - High first" => hardware.OrderByDescending(h => h.Price).ToList(),
+                "Price - Low first" => hardware.OrderBy(h => h.Price).ToList(),
+                "Name - Alphabetical" => hardware.OrderBy(h => h.Name).ToList(),
+                "Name - Reverse Alphabetical" => hardware.OrderByDescending(h => h.Name).ToList(),
+                "-" => hardware,
+                _ => hardware,
+            };
+        }
+
         public IActionResult About()
         {
             return View();
         }
 
-        public IActionResult AddToCart(int productId, string returnUrl)
+        public async Task<IActionResult> AddToCart(int productId, string returnUrl)
         {
-            var productToAdd = _drumContext.Products.FirstOrDefault(p => p.Id == productId);
-
-            if (productToAdd != null)
+            if (!User.Identity.IsAuthenticated)
             {
-                var existingCartItem = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
+                // If the user is not authenticated, return to the current page or any other desired action
+                return Redirect(returnUrl);
+            }
+
+            var productToAdd = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var user = await _userManager.GetUserAsync(User); // Get the current logged-in user
+
+            if (productToAdd != null && user != null)
+            {
+                // Check if the item already exists in the cart for the user
+                var existingCartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.Product.Id == productId && c.UserId == user.Id && c.IsCheckedOut == false);
 
                 if (existingCartItem != null)
                 {
+                    // If the item is already in the cart, update the quantity
                     existingCartItem.Quantity++;
-                    _drumContext.Update(existingCartItem);
-                    _logger.LogInformation($"[INFO] {existingCartItem} already in cart: now {existingCartItem.Quantity}x");
+                    _context.Update(existingCartItem);
                 }
                 else
                 {
-                    var cartItem = new CartItem
-                    {
-                        Product = productToAdd,
-                        Quantity = 1
-                    };
-                    _drumContext.CartItems.Add(cartItem);
-                    _logger.LogInformation($"[INFO] {cartItem} added to cart");
+                    // If the item is not in the cart, add a new cart item
+                    var cartItem = new CartItem(productToAdd, 1, user.Id); // Provide user id
+                    _context.CartItems.Add(cartItem);
                 }
 
-                _drumContext.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return Redirect(returnUrl);
         }
 
-        public IActionResult ShoppingCart()
+        public IActionResult AccessDenied(bool notLoggedIn)
         {
-            var cartItems = _drumContext.CartItems.Include(c => c.Product).ToList();
-            _logger.LogInformation($"[INFO] Retrieved items for shopping cart: {cartItems.Count} different items");
+            ViewData["Title"] = "Access Denied";
 
-            return View(cartItems);
-        }
-
-        public IActionResult AddExtra(int productId)
-        {
-            var cartItemToAdd = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
-
-            if (cartItemToAdd != null)
+            if (notLoggedIn)
             {
-                cartItemToAdd.Quantity++;
-                _drumContext.SaveChanges();
-                _logger.LogInformation($"[INFO] {cartItemToAdd}: Quantity + 1");
+                ViewData["Message"] = "Please login first.";
+            }
+            else
+            {
+                ViewData["Message"] = "You do not have the rights to visit this page.";
             }
 
-            return RedirectToAction("ShoppingCart");
-        }
-        public IActionResult RemoveFromCart(int productId)
-        {
-            var cartItemToRemove = _drumContext.CartItems.FirstOrDefault(c => c.Product.Id == productId);
+            ViewData["NotLoggedIn"] = notLoggedIn; // Pass the notLoggedIn parameter to the view
 
-            if (cartItemToRemove != null)
-            {
-                if (cartItemToRemove.Quantity > 1)
-                {
-                    cartItemToRemove.Quantity--;
-                    _logger.LogInformation($"[INFO] {cartItemToRemove}: Quantity - 1");
-                }
-                else
-                {
-                    _drumContext.CartItems.Remove(cartItemToRemove);
-                    _logger.LogInformation($"[INFO] {cartItemToRemove} removed");
-                }
-                _drumContext.SaveChanges();
-            }
-
-            return RedirectToAction("ShoppingCart");
+            return View();
         }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -81,7 +81,7 @@ public class Program
         //// Add items to database
         //using var scope = app.Services.CreateScope();
         //var serviceProvider = scope.ServiceProvider;
-        //var context = serviceProvider.GetRequiredService<TestContext>();
+        //var context = serviceProvider.GetRequiredService<DrumContext>();
 
         //List<Product> products = DbInitializer.InitializeProducts(context);
         //context.Products.AddRange(products);
