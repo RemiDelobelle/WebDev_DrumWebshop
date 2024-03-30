@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using DrumWebshop.ViewModel;
+@inject UserManager<IdentityUser> UserManager
+@model UserOrdersVM
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Vertical navbar -->
+            @Html.Partial("_Navbar")
+
+            <!-- Admin panel content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="pt-3">
+                    <h1>User Orders</h1>
+                    @{
+                        if (Model != null)
+                        {
+                            var userCount = Model.Users?.Count() ?? 0;
+                            var orderCount = Model.Orders?.Count() ?? 0;
+                            @if (orderCount == 0)
+                            {
+                                <p>No orders found.</p>
+                            }
+                        }
+                    }
+                    @if (Model != null && Model.Users.Any())
+                    {
+                        <div class="row">
+                            <div class="col-auto px-1">
+                                <form method="post" action="@Url.Action("DeleteAllCheckedOutItems", "Admin")">
+                                    <button type="submit" class="btn btn-danger">Delete all checked out items</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="mt-4"></div>
+
+                        @foreach (var user in Model.Users)
+                        {
+                            var userOrders = Model.Orders.Where(o => o.UserId == user.Id).ToList();
+                            if (userOrders.Any())
+                            {
+                                var currentUser = await UserManager.FindByIdAsync(user.Id);
+                                var userRole = "";
+                                if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+                                {
+                                    userRole = "(Admin)";
+                                }
+                                else if (await UserManager.IsInRoleAsync(currentUser, "Manager"))
+                                {
+                                    userRole = "(Manager)";
+                                }
+                                else if (await UserManager.IsInRoleAsync(currentUser, "PendingMember"))
+                                {
+                                    userRole = "(PendingMember)";
+                                }
+                                else
+                                {
+                                    userRole = "(Member)";
+                                }
+
+                                <h2 style="margin-bottom: 20px;">User: <span style="font-weight: normal;">@user.Email @userRole</span></h2>
+
+                                <table class="table table-striped" style="margin-bottom: 20px;">
+                                    <thead style="background-color: black; color: white;">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Type</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var order in userOrders)
+                                        {
+                                            <tr>
+                                                <td class="align-middle">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="@Url.Content(order.Product.Image)" alt="@order.Product.Name" class="img-thumbnail mr-2" style="max-width: 50px; max-height: 50px;" />
+                                                        <span style="font-size: 18px;">@order.Product.Name</span>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle">€@order.Product.Price</td>
+                                                <td class="align-middle">
+                                                    @if (order.Product.GetType() == typeof(DrumWebshop.Models.Cymbal))
+                                                    {
+                                                        var cymbal = (DrumWebshop.Models.Cymbal)order.Product;
+                                                        switch (cymbal.Type)
+                                                        {
+                                                            case DrumWebshop.Models.CymbalType.Hihat:
+                                                                @("Hihat")
+                                                                break;
+                                                            case DrumWebshop.Models.CymbalType.Crash:
+                                                                @("Crash")
+                                                                break;
+                                                            case DrumWebshop.Models.CymbalType.Ride:
+                                                                @("Ride")
+                                                                break;
+                                                            default:
+                                                                @("Other")
+                                                                break;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @order.Product.GetType().Name
+                                                    }
+                                                </td>
+                                                <td class="align-middle">@order.Quantity</td>
+                                                <td class="align-middle">€@(order.Product.Price * order.Quantity)</td>
+                                                <td class="align-middle">
+                                                    <form method="post" action="@Url.Action("AddOne", "Admin")" class="d-inline">
+                                                        <input type="hidden" name="cartItemId" value="@order.Id" />
+                                                        <button type="submit" class="btn btn-success btn-md">+</button>
+                                                    </form>
+                                                    <form method="post" action="@Url.Action("RemoveOne", "Admin")" class="d-inline">
+                                                        <input type="hidden" name="cartItemId" value="@order.Id" />
+                                                        <button type="submit" class="btn btn-danger btn-md ml-1">-</button>
+                                                    </form>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="align-middle" style="font-size: 18px;"><strong>Total:</strong></td>
+                                            <td class="align-middle" colspan="2" style="font-size: 18px;"><strong>€@userOrders.Sum(order => order.Product.Price * order.Quantity)</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="row">
+                                    <div class="col-auto px-1">
+                                        <form method="post" action="@Url.Action("DeleteCheckedOutItemsUser", "Admin")">
+                                            <input type="hidden" name="userId" value="@user.Id">
+                                            <button type="submit" class="btn btn-danger">Delete checked out items for this user</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="mt-4"></div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <p>No orders found.</p>
+                    }
+                    <div class="row">
+                        <div class="col-auto px-1">
+                            <a class="btn btn-danger" href="/">Return to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

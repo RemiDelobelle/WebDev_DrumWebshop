@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<h1 class="text-danger">@ViewData["Title"]</h1>
+
+<p>@ViewData["Message"]</p>
+
+@if ((bool)ViewData["notLoggedIn"])
+{
+    <a href="/Account/Login" class="btn btn-success">Login</a>
+}
+<a href="/Home/Index" class="btn btn-danger">Return to Home</a>

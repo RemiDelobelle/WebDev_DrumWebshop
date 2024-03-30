@@ -1,0 +1,107 @@
+﻿@model List<DrumWebshop.Models.Product>
+
+@{
+    ViewData["Title"] = "Change Product Prices";
+    int rowNumber = 1;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Vertical navbar -->
+            @Html.Partial("_Navbar")
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="container mt-5 mb-5">
+                    <h1>@ViewData["Title"]</h1>
+                    <form id="sortForm" asp-controller="Admin" asp-action="ChangePrices" method="get" class="d-flex">
+                        <label for="sortOrder" class="mr-2 mt-2" style="margin-right: 5px">Sort By:</label>
+                        <select class="form-control form-control-sm mr-2" id="sortOrder" name="sortOrder" style="width: 250px; height: 40px; margin-right: 5px;">
+                            <option value="-">-</option>
+                            <option value="Type">Type</option>
+                            <option value="Type - Reverse">Type - Reverse</option>
+                            <option value="Price (item) - High first">Price (item) - High first</option>
+                            <option value="Price (item) - Low first">Price (item) - Low first</option>
+                            <option value="Name - Alphabetical">Name - Alphabetical</option>
+                            <option value="Name - Reverse Alphabetical">Name - Reverse Alphabetical</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary align-self-center" style="min-width: 80px; height: 40px;">Apply</button>
+                    </form>
+
+                    <div class="my-3"></div>
+
+                    <table class="table table-striped">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Current Price</th>
+                                <th scope="col">New Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                <tr>
+                                    <td class="align-middle"><strong>@rowNumber</strong></td>
+                                    <td class="align-middle text-center">
+                                        <div class="d-flex align-items-center">
+                                            <img src="@Url.Content(product.Image)" alt="@product.Name" class="img-thumbnail mr-2" style="max-width: 50px; max-height: 50px;" />
+                                            <span style="font-size: 18px;">@product.Name</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        @if (product.GetType() == typeof(DrumWebshop.Models.Cymbal))
+                                        {
+                                            var cymbal = (DrumWebshop.Models.Cymbal)product;
+                                            switch (cymbal.Type)
+                                            {
+                                                case DrumWebshop.Models.CymbalType.Hihat:
+                                                    @("Hihat")
+                                                    break;
+                                                case DrumWebshop.Models.CymbalType.Crash:
+                                                    @("Crash")
+                                                    break;
+                                                case DrumWebshop.Models.CymbalType.Ride:
+                                                    @("Ride")
+                                                    break;
+                                                default:
+                                                    @("Other")
+                                                    break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @product.GetType().Name
+                                        }
+                                    </td>
+                                    <td class="align-middle">€@product.Price</td>
+                                    <td class="align-middle">
+                                        <form method="post" action="@Url.Action("UpdatePrice", "Admin")">
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="number" name="newPrice" step="1" min="1" required />
+                                            <button type="submit" class="btn btn-primary">Change</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                rowNumber++;
+                            }
+                        </tbody>
+                    </table>
+
+                    <a class="btn btn-danger" href="/">Return to Home</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

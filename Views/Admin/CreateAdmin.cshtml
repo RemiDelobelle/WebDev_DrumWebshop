@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model DrumWebshop.ViewModel.RegisterVM
+@{
+    ViewData["Title"] = "Manager Panel";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Vertical navbar -->
+        @Html.Partial("_Navbar")
+
+        <!-- Admin panel content -->
+        <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4">
+            <div class="pt-3">
+                <h1 class="mb-4">Create Admin Account</h1>
+                <!-- Form to create new admin account -->
+                <form method="post" asp-controller="Admin" asp-action="CreateAdmin">
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" style="max-width: 400px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" style="max-width: 400px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="inputConfirmPassword" name="confirmPassword" placeholder="Confirm Password" style="max-width: 400px;">
+                    </div>
+                    <p class="text-muted small">Password must contain at least one lowercase letter, one uppercase letter, one digit, one special symbol, and must be at least 8 characters long.</p>
+                    <button type="submit" class="btn btn-primary">Create Admin</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

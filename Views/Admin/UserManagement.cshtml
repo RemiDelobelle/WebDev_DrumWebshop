@@ -1,0 +1,129 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model List<IdentityUser>
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Vertical navbar -->
+            @Html.Partial("_Navbar")
+
+            <!-- Admin panel content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="pt-3">
+                    <h1>User Management</h1>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead style="background-color: black; color: white;">
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>@user.Email</td>
+                                        <td>
+                                            @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                                            {
+                                                <span>Admin</span>
+                                            }
+                                            else if (await UserManager.IsInRoleAsync(user, "Manager"))
+                                            {
+                                                <span>Manager</span>
+                                            }
+                                            else if (await UserManager.IsInRoleAsync(user, "PendingMember"))
+                                            {
+                                                <span>PendingMember</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Member</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                                            {
+                                                <div class="row">
+                                                    <form method="post" asp-controller="Admin" asp-action="RemoveAdmin" class="col">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-danger btn-block mb-2">Remove Admin</button>
+                                                    </form>
+                                                </div>
+                                            }
+                                            else if (await UserManager.IsInRoleAsync(user, "Manager"))
+                                            {
+                                                <div class="row">
+                                                    <form method="post" asp-controller="Admin" asp-action="PromoteToMember" class="col">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-warning btn-block mb-2">Demote to Member</button>
+                                                    </form>
+                                                    <form method="post" asp-controller="Admin" asp-action="PromoteToAdmin" class="col">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-primary btn-block">Promote to Admin</button>
+                                                    </form>
+                                                </div>
+                                            }
+                                            else if (await UserManager.IsInRoleAsync(user, "PendingMember"))
+                                            {
+                                                <div class="row">
+                                                    <form method="post" asp-controller="Admin" asp-action="AcceptPendingMember">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-success">Accept</button>
+                                                    </form>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="row">
+                                                    <form method="post" asp-controller="Admin" asp-action="PromoteToManager" class="col">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-success btn-block mb-2">Promote to Manager</button>
+                                                    </form>
+                                                    <form method="post" asp-controller="Admin" asp-action="PromoteToAdmin" class="col">
+                                                        <input type="hidden" name="userId" value="@user.Id" />
+                                                        <button type="submit" class="btn btn-primary btn-block">Promote to Admin</button>
+                                                    </form>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No users found.</p>
+                    }
+
+                    <a class="btn btn-primary" href="/Admin/CreateAdmin">Create new Admin</a>
+                    <a class="btn btn-danger" href="/">Return to Home</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    @if (TempData["ShowPopup"] != null && (bool)TempData["ShowPopup"])
+    {
+        <script>
+            alert('@TempData["ErrorMessage"]');
+        </script>
+    }
+</body>
+</html>
