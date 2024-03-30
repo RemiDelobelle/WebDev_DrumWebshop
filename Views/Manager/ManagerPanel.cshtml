@@ -1,6 +1,6 @@
 ﻿@model List<DrumWebshop.Models.CartItem>
 @{
-    ViewData["Title"] = "Shopping Cart";
+    ViewData["Title"] = "Manager Panel";
 }
 
 <!DOCTYPE html>
@@ -13,6 +13,24 @@
 
     <div class="container mt-5 mb-5">
         <h1>@ViewData["Title"]</h1>
+        <form id="sortForm" asp-controller="Manager" asp-action="ManagerPanel" method="get" class="d-flex">
+            <label for="sortOrder" class="mr-2 mt-2" style="margin-right: 5px">Sort By:</label>
+            <select class="form-control form-control-sm mr-2" id="sortOrder" name="sortOrder" style="width: 250px; height: 40px; margin-right: 5px;">
+                <option value="-">-</option>
+                <option value="Type">Type</option>
+                <option value="Type - Reverse">Type - Reverse</option>
+                <option value="Quantity - High first">Quantity - High first</option>
+                <option value="Quantity - Low first">Quantity - Low first</option>
+                <option value="Price (item) - High first">Price (item) - High first</option>
+                <option value="Price (item) - Low first">Price (item) - Low first</option>
+                <option value="Name - Alphabetical">Name - Alphabetical</option>
+                <option value="Name - Reverse Alphabetical">Name - Reverse Alphabetical</option>
+            </select>
+            <button type="submit" class="btn btn-primary align-self-center" style="min-width: 80px; height: 40px;">Apply</button>
+        </form>
+
+        <div class="my-3"></div>
+
         <table class="table table-striped">
             <thead class="bg-dark text-white">
                 <tr>
@@ -21,7 +39,6 @@
                     <th scope="col">Type</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,16 +79,6 @@
                         </td>
                         <td class="align-middle" style="font-size: 18px;">@item.Quantity</td>
                         <td class="align-middle" style="font-size: 18px;">€@(item.Product.Price * item.Quantity)</td>
-                        <td class="align-middle">
-                            <form method="post" action="@Url.Action("AddExtra", "Cart")" class="d-inline">
-                                <input type="hidden" name="productId" value="@item.Product.Id" />
-                                <button type="submit" class="btn btn-success btn-md">+</button>
-                            </form>
-                            <form method="post" action="@Url.Action("RemoveFromCart", "Cart")" class="d-inline">
-                                <input type="hidden" name="productId" value="@item.Product.Id" />
-                                <button type="submit" class="btn btn-danger btn-md ml-1">-</button>
-                            </form>
-                        </td>
                     </tr>
                 }
             </tbody>
@@ -80,10 +87,10 @@
                     <td colspan="3" class="align-middle" style="font-size: 18px;"><strong>Total:</strong></td>
                     <td class="align-middle" style="font-size: 18px;"><strong>@Model.Sum(item => item.Quantity)</strong></td>
                     <td class="align-middle" style="font-size: 18px;"><strong>€@Model.Sum(item => item.Product.Price * item.Quantity)</strong></td>
-                    <td class="align-middle"><a href="@Url.Action("Checkout", "Cart")" class="btn btn-primary">Checkout</a></td>
                 </tr>
             </tfoot>
         </table>
+        <a class="btn btn-danger" href="/">Return to Home</a>
     </div>
 </body>
 </html>
