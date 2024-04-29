@@ -64,6 +64,7 @@ public class Program
 
             string email = "admin@admin.com";
             string password = "Test1234*";
+            // All passwords are this (testing)
 
             if (await userManager.FindByEmailAsync(email) == null)  // account not found --> create
             {
